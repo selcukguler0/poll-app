@@ -1,11 +1,15 @@
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import randomBytes from "randombytes";
 import { useRouter } from "next/router";
+import { supabase } from "../utils/supabaseClient";
 
 export default function Home() {
 	const router = useRouter();
-	const [pollList, setPollList] = useState([{ vote: "" }, { vote: "" }]);
+	const [pollList, setPollList] = useState([
+		{ choice: "", count: 0 },
+		{ choice: "", count: 0 },
+	]);
 	const hash = randomBytes(16).toString("hex");
 
 	const handleChoiceChange = (e, index) => {
@@ -23,18 +27,24 @@ export default function Home() {
 
 	const handleChoiceAdd = () => {
 		if (pollList.length < 5) {
-			setPollList([...pollList, { vote: "" }]);
+			setPollList([...pollList, { choice: "",count: 0 }]);
 		}
 	};
 
-	const createHandler = () => {
+	const createHandler = async () => {
+		console.log(pollList);
 		const count = 0;
 		pollList.map((poll) => {
-			if (poll.vote !== "") {
+			if (poll.choice !== "") {
 				count++;
 			}
 		});
 		if (count >= 2) {
+			const { error } = await supabase.from("pool").insert([{ url: hash, choices: pollList }]);
+			if (error) {
+				console.log(error);
+				return;
+			}
 			router.push(`/vote/${hash}`);
 		}else{
 			alert("Please add at least two choices");
@@ -70,8 +80,8 @@ export default function Home() {
 					{pollList.map((x, i) => (
 						<div key={i} className="flex items-center flex-row gap-3 mt-3">
 							<input
-								name="vote"
-								value={x.vote}
+								name="choice"
+								value={x.choice}
 								onChange={(e) => handleChoiceChange(e, i)}
 								placeholder="Choice"
 							/>

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "../../utils/supabaseClient";
 
 //Doughnut - Pie
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -15,37 +16,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 //Vertical Bar
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title);
 
-const choices = [
-	{ vote: "ss", count: 33 },
-	{ vote: "2", count: 13 },
-];
-
-export const data = {
-	labels: choices.map((choice) => choice.vote),
-	datasets: [
-		{
-			label: "# of Votes",
-			data: choices.map((choice) => choice.count),
-			backgroundColor: [
-				"rgba(255, 99, 132, 0.2)",
-				"rgba(54, 162, 235, 0.2)",
-				"rgba(255, 206, 86, 0.2)",
-				"rgba(75, 192, 192, 0.2)",
-				"rgba(153, 102, 255, 0.2)",
-				"rgba(255, 159, 64, 0.2)",
-			],
-			borderColor: [
-				"rgba(255, 99, 132, 1)",
-				"rgba(54, 162, 235, 1)",
-				"rgba(255, 206, 86, 1)",
-				"rgba(75, 192, 192, 1)",
-				"rgba(153, 102, 255, 1)",
-				"rgba(255, 159, 64, 1)",
-			],
-			borderWidth: 2,
-		},
-	],
-};
 
 export const options = {
 	responsive: true,
@@ -60,27 +30,72 @@ export const options = {
 	},
 };
 
-export const verticalBarData = {
-	labels: ["January", "February", "March", "April"],
-	datasets: [
-		{
-			label: "Dataset 1",
-			data: [40, 39, 10, 40],
-			backgroundColor: "rgba(255, 99, 132, 0.5)",
-		},
-		{
-			label: "Dataset 2",
-			data: [40, 39, 10, 40],
-			backgroundColor: "rgba(53, 162, 235, 0.5)",
-		},
-	],
-};
-
 export default function Results() {
+	const [results, setResults] = useState();
+	const [error, setError] = useState();
+	useEffect(() => {
+		const getResults = async () => {
+			const { data, error } = await supabase.from("pool").select();
+			if (error) {
+				setError(error);
+			}
+			setResults(data);
+		};
+		getResults();
+	},[]);
+
 	const [chartType, setChartType] = useState("doughnut");
 	const router = useRouter();
 	const { hash } = router.query;
+
 	console.log(hash);
+	
+	if (!results) {
+		console.log("no data");
+		return <div>Loading...</div>;
+	}
+	if (error) {
+		console.log(error);
+		return <div>Error</div>;
+	}
+	console.log(results[0]);
+
+	const data = {
+		labels: results[0].choices.map((result) => result.choice),
+		datasets: [
+			{
+				label: "# of Votes",
+				data: results[0].choices.map((result) => result.count),
+				backgroundColor: [
+					"rgba(255, 99, 132, 0.2)",
+					"rgba(54, 162, 235, 0.2)",
+					"rgba(255, 206, 86, 0.2)",
+					"rgba(75, 192, 192, 0.2)",
+					"rgba(153, 102, 255, 0.2)",
+					"rgba(255, 159, 64, 0.2)",
+				],
+				borderColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+				],
+				borderWidth: 2,
+			},
+		],
+	};
+	const verticalBarData = {
+		labels: results[0].choices.map((result) => result.choice),
+		datasets: [
+			{
+				label: "Choices",
+				data: results[0].choices.map((result) => result.count),
+				backgroundColor: "rgba(255, 99, 132, 0.5)",
+			},
+		],
+	};
 	return (
 		<div className="h-screen flex flex-col justify-center items-center">
 			<div className="flex gap-4">
