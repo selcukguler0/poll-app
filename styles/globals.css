@@ -1,26 +1,52 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
-  box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+html,
+body {
+	background-color: black;
+	height: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+input, .choiceButton {
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	outline: none;
+	font-size: 1.6rem;
+	padding: 0.5rem 0.5rem 0.5rem 1.4rem;
+	width: 100%;
+	background-color: transparent;
+	color: white;
+}
+.choiceButton:hover {
+	cursor: pointer;
+	background-color: rgb(255, 255, 255);
+	color: black;
+}
+.chartTypeButton {
+		border: 1px solid #ccc;
+		padding: 8px;
+		border-radius: 10px;
+		outline: none;
+		font-size: 1.6rem;
+		background-color: transparent;
+		color: white;
+		margin-bottom: 50px;
+}
+.chartTypeButton:hover {
+	cursor: pointer;
+	background-color: rgb(255, 255, 255);
+	color: black;
+}
+
+input::placeholder {
+	color: rgb(171, 171, 171);
 }
