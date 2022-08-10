@@ -4,6 +4,10 @@ import randomBytes from "randombytes";
 import { useRouter } from "next/router";
 import { supabase } from "../utils/supabaseClient";
 
+//Notification
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function Home() {
 	const router = useRouter();
 	const [pollList, setPollList] = useState([
@@ -34,35 +38,55 @@ export default function Home() {
 	const createHandler = async () => {
 		console.log(pollList);
 		const count = 0;
-		setPollList(pollList.filter((choice) => choice.choice !== ""));
 		pollList.map((poll) => {
 			if (poll.choice !== "") {
 				count++;
 			}
 		});
 		if (count >= 2) {
+			//filter unique choices
+			let uniqueObjArray = [
+				...new Map(pollList.map((item) => [item["choice"], item])).values(),
+			];
+			//check if there are duplicate choices
+			if (pollList.length !== uniqueObjArray.length) {
+				toast.error("Duplicate choices are not allowed", { autoClose: 1500 });
+				return;
+			}
+			//if no error, create poll
+			toast("✔ Poll Successfully Created \n Redirecting...", {
+				position: "top-right",
+				autoClose: 1500,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+
 			pollList.map(async (poll) => {
 				console.log("pollList", poll);
 				const { data, error } = await supabase
 					.from("pool")
-					.insert([{ url: hash, choices: [poll], choice_value: poll.choice }]);	
+					.insert([{ url: hash, choices: [poll], choice_value: poll.choice }]);
 				if (error) {
 					console.log(error);
-					throw new error;
+					throw new error();
 				}
 				if (data) {
-					router.push(`/vote/${hash}`);	
+					setTimeout(() => {
+						router.push(`/vote/${hash}`);
+					}, 2000);
 				}
 			});
-
-		
 		} else {
-			alert("Please add at least two choices");
+			toast.error("Please add at least two choices", {autoClose: 1500});
 		}
 	};
 
 	return (
 		<div className="flex justify-center flex-col">
+			<ToastContainer />
 			{/* title */}
 			<div className="text-center mt-[100px]">
 				<h1 className="text-white font-bold text-6xl">Create Poll</h1>

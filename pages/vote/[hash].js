@@ -1,17 +1,14 @@
 import { supabase } from "../../utils/supabaseClient";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function Votes({ results, hash }) {
 	const router = useRouter();
 	const choiceRef = useRef(null);
-	console.log("ress", results);
 
-	const handleChoiceOne = async (e) => {
+	const handleChoice = async (e) => {
 		const { value } = e.target;
-		console.log("id",choiceRef.current.id);
-		console.log("value",value);
-		const id = await choiceRef.current.id;
+		
 		//select current count
 		const { data: sdata, error: serror } = await supabase
 			.from("pool")
@@ -40,14 +37,15 @@ export default function Votes({ results, hash }) {
 			console.log(error);
 			return;
 		}
-		router.push(`/result/${hash}`);
+		if (data) {
+			router.push(`/result/${hash}`);
+		}
 	};
 
 	if (!results || results.length === 0) {
 		console.log("no data");
 		return <div>Loading...</div>;
 	}
-	console.log("res", results);
 	return (
 		<div className="h-screen flex justify-center items-center gap-y-3 flex-col w-96 m-auto">
 			{results.map((choice, i) => {
@@ -57,7 +55,7 @@ export default function Votes({ results, hash }) {
 						ref={choiceRef}
 						id={i+1}
 						type="button"
-						onClick={handleChoiceOne}
+						onClick={handleChoice}
 						className="choiceButton"
 						value={choice.choices[0].choice}
 					/>
