@@ -16,7 +16,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 //Vertical Bar
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title);
 
-
 export const options = {
 	responsive: true,
 	plugins: {
@@ -30,26 +29,18 @@ export const options = {
 	},
 };
 
-export default function Results() {
-	const [results, setResults] = useState();
-	const [error, setError] = useState();
-	useEffect(() => {
-		const getResults = async () => {
-			const { data, error } = await supabase.from("pool").select();
-			if (error) {
-				setError(error);
-			}
-			setResults(data);
-		};
-		getResults();
-	},[]);
-
+export default function Results({ results, error }) {
 	const [chartType, setChartType] = useState("doughnut");
 	const router = useRouter();
 	const { hash } = router.query;
 
-	console.log(hash);
-	
+	results.map((count) => {
+		console.log("choice", count.choices[0].choice);
+	});
+
+	console.log("results", results);
+	console.log("results", results[0].choices[0]);
+
 	if (!results) {
 		console.log("no data");
 		return <div>Loading...</div>;
@@ -61,11 +52,12 @@ export default function Results() {
 	console.log(results[0]);
 
 	const data = {
-		labels: results[0].choices.map((result) => result.choice),
+		labels: results.map((count) => count.choices[0].choice),
 		datasets: [
 			{
 				label: "# of Votes",
-				data: results[0].choices.map((result) => result.count),
+				data: results.map((count) => count.choices[0].count),
+
 				backgroundColor: [
 					"rgba(255, 99, 132, 0.2)",
 					"rgba(54, 162, 235, 0.2)",
@@ -122,4 +114,21 @@ export default function Results() {
 			</div>
 		</div>
 	);
+}
+
+export async function getServerSideProps(context) {
+	const { hash } = context.query;
+	const { data, error } = await supabase
+		.from("pool")
+		.select("choices")
+		.eq("url", hash);
+	if (error) {
+		console.log(error);
+	}
+	return {
+		props: {
+			results: data,
+			error,
+		},
+	};
 }

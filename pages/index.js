@@ -27,26 +27,36 @@ export default function Home() {
 
 	const handleChoiceAdd = () => {
 		if (pollList.length < 5) {
-			setPollList([...pollList, { choice: "",count: 0 }]);
+			setPollList([...pollList, { choice: "", count: 0 }]);
 		}
 	};
 
 	const createHandler = async () => {
 		console.log(pollList);
 		const count = 0;
+		setPollList(pollList.filter((choice) => choice.choice !== ""));
 		pollList.map((poll) => {
 			if (poll.choice !== "") {
 				count++;
 			}
 		});
 		if (count >= 2) {
-			const { error } = await supabase.from("pool").insert([{ url: hash, choices: pollList }]);
-			if (error) {
-				console.log(error);
-				return;
-			}
-			router.push(`/vote/${hash}`);
-		}else{
+			pollList.map(async (poll) => {
+				console.log("pollList", poll);
+				const { data, error } = await supabase
+					.from("pool")
+					.insert([{ url: hash, choices: [poll], choice_value: poll.choice }]);	
+				if (error) {
+					console.log(error);
+					throw new error;
+				}
+				if (data) {
+					router.push(`/vote/${hash}`);	
+				}
+			});
+
+		
+		} else {
 			alert("Please add at least two choices");
 		}
 	};
