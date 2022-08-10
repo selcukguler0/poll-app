@@ -6,6 +6,8 @@ import { supabase } from "../utils/supabaseClient";
 
 import { Player } from "@lottiefiles/react-lottie-player";
 
+import {BsArrowRightSquareFill} from "react-icons/bs";
+import { SiAddthis } from "react-icons/si";
 //Notification
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -78,14 +80,15 @@ export default function Home() {
 				}
 				if (data) {
 					setLoading(true);
-					
+
 					setTimeout(() => {
 						router.push(`/vote/${hash}`);
 					}, 2000);
 				}
 			});
 		} else {
-			toast.error("Please add at least two choices", {autoClose: 1500});
+			console.log("Please add at least two choices");
+			toast.error("Please add at least two choices", { autoClose: 1500 });
 		}
 	};
 	if (loading) {
@@ -102,27 +105,26 @@ export default function Home() {
 	}
 	return (
 		<div className="flex justify-center flex-col">
+			<ToastContainer />
 			{/* title */}
 			<div className="text-center mt-[100px]">
-				<h1 className="text-white font-bold text-6xl">Create Poll</h1>
+				<h1 className="text-white font-bold text-6xl gradient-text">
+					Create Poll
+				</h1>
 			</div>
 
 			{/* form */}
 			<div
 				id="poll-elements"
 				className="flex flex-col gap-y-5 items-center justify-center w-96 m-auto mt-10">
-				<div>
-					<button
-						className="shadow appearance-none rounded py-2 px-3
-					bg-blue-400 text-white mr-5"
-						onClick={handleChoiceAdd}>
-						+
+				<div className="flex ">
+					<button className="bg-transparent mr-5" onClick={handleChoiceAdd}>
+						<SiAddthis className="gradient-color text-5xl" />
 					</button>
 					<button
 						onClick={createHandler}
-						className="shadow appearance-none rounded py-2 px-3
-					bg-blue-400 text-white">
-						Create
+						className="flex justify-center items-center">
+						<BsArrowRightSquareFill className="gradient-color text-5xl" />
 					</button>
 				</div>
 				<div>

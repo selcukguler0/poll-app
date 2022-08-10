@@ -16,7 +16,8 @@ body {
 		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-input, .choiceButton {
+input,
+.choiceButton {
 	border: 1px solid #ccc;
 	border-radius: 10px;
 	outline: none;
@@ -26,21 +27,24 @@ input, .choiceButton {
 	background-color: transparent;
 	color: white;
 }
+
 .choiceButton:hover {
 	cursor: pointer;
 	background-color: rgb(255, 255, 255);
 	color: black;
 }
+
 .chartTypeButton {
-		border: 1px solid #ccc;
-		padding: 8px;
-		border-radius: 10px;
-		outline: none;
-		font-size: 1.6rem;
-		background-color: transparent;
-		color: white;
-		margin-bottom: 50px;
+	border: 1px solid #ccc;
+	padding: 8px;
+	border-radius: 10px;
+	outline: none;
+	font-size: 1.6rem;
+	background-color: transparent;
+	color: white;
+	margin-bottom: 50px;
 }
+
 .chartTypeButton:hover {
 	cursor: pointer;
 	background-color: rgb(255, 255, 255);
@@ -49,4 +53,12 @@ input, .choiceButton {
 
 input::placeholder {
 	color: rgb(171, 171, 171);
+}
+
+.gradient-color {
+	background: rgb(3, 148, 237);
+	background: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
+}
+.gradient-text {
+	color: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
 }
