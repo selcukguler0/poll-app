@@ -88,8 +88,8 @@ input::placeholder {
 
 .gradient-text {
 	background: -webkit-linear-gradient(180deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 }
 
 .share-items {

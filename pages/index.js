@@ -114,9 +114,9 @@ export default function Home() {
 			<ToastContainer />
 			{/* title */}
 			<div className="text-center mt-[100px]">
-				<h1 className="text-white font-bold text-6xl gradient-text">
+				<span className="font-bold text-6xl gradient-text">
 					Create Poll
-				</h1>
+				</span>
 			</div>
 
 			{/* form */}
