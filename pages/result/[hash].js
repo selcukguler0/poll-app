@@ -14,7 +14,7 @@ import { CategoryScale, LinearScale, BarElement, Title } from "chart.js";
 
 import { Doughnut } from "react-chartjs-2";
 import { Pie } from "react-chartjs-2";
-import { Bar } from "react-chartjs-2";
+import { Player } from "@lottiefiles/react-lottie-player";
 import { Line } from "react-chartjs-2";
 import { PointElement, LineElement, Filler } from "chart.js";
 
@@ -87,31 +87,26 @@ export default function Results({ serverData, error }) {
 	}),
 		[sub];
 
-	const shareHandler = () => {
-		toast("✔ Link copied to clickboard", {
-			position: "top-right",
-			autoClose: 3000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-		});
-		var text = document.location.href;
-		navigator.clipboard.writeText(text).then(
-			function () {
-				console.log("Async: Copying to clipboard was successful!");
-			},
-			function (err) {
-				console.error("Async: Could not copy text: ", err);
-			}
-		);
+	const shareHandler = (e) => {
+		if(e !== "vote"){
+			toast("✔ Results link copied to clickboard", {
+				autoClose: 3000,
+			});
+			var text = document.location.href;
+			navigator.clipboard.writeText(text);
+		} else {
+			toast("✔ Vote link copied to clickboard", {
+				autoClose: 3000,
+			});
+			var text = document.location.href;
+			text = text.replace("result", "vote");
+			navigator.clipboard.writeText(text);
+		}
 	};
 	const data = {
 		labels: results.map((count) => count.choices[0].choice),
 		datasets: [
 			{
-				label: "# of Votes",
 				data: results.map((count) => count.choices[0].count),
 
 				backgroundColor: [
@@ -138,8 +133,8 @@ export default function Results({ serverData, error }) {
 		labels: results.map((count) => count.choices[0].choice),
 		datasets: [
 			{
+				label: "Votes",
 				fill: true,
-				label: "Dataset 2",
 				data: results.map((count) => count.choices[0].count),
 				borderColor: "rgb(53, 162, 235)",
 				backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -160,26 +155,54 @@ export default function Results({ serverData, error }) {
 		
 	return (
 		<div className="h-screen flex flex-col justify-center items-center">
-			<ToastContainer/>
+			<ToastContainer />
+			<div className="flex flex-col gap-y-5 share-items">
+				<button className="share-button" onClick={shareHandler}>
+					<Player
+						autoplay
+						loop
+						src="https://assets1.lottiefiles.com/packages/lf20_OBNxe4.json"
+						style={{ height: "50px", width: "50px" }}></Player>
+					Share Results
+				</button>
+				<button className="share-button" onClick={() => shareHandler("vote")}>
+					<Player
+						autoplay
+						loop
+						src="https://assets1.lottiefiles.com/packages/lf20_OBNxe4.json"
+						style={{ height: "50px", width: "50px", color: "#fff" }}></Player>
+					Vote
+				</button>
+			</div>
 			<div className="flex gap-x-4 items-center">
 				<button
 					onClick={() => setChartType("doughnut")}
-					className="text-center text-white chartTypeButton">
+					className={
+						chartType === "doughnut"
+							? "text-white chartTypeButton active"
+							: "text-white chartTypeButton"
+					}>
 					Doughnut
 				</button>
 				<button
 					onClick={() => setChartType("pie")}
-					className=" text-white chartTypeButton">
+					className={
+						chartType === "pie"
+							? "text-white chartTypeButton active"
+							: "text-white chartTypeButton"
+					}>
 					Pie
 				</button>
 				<button
 					onClick={() => setChartType("area")}
-					className=" text-white chartTypeButton">
+					className={
+						chartType === "area"
+							? "text-white chartTypeButton active"
+							: "text-white chartTypeButton"
+					}>
 					Area
 				</button>
-				<button onClick={shareHandler}>
-					<FaShareSquare className="text-3xl text-blue-300 mb-[50px]" />
-				</button>
+				<button onClick={shareHandler}></button>
 			</div>
 			<div className="w-96">
 				{chartType === "doughnut" && <Doughnut data={data} />}

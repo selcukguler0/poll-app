@@ -37,6 +37,8 @@ export default function Home() {
 	const handleChoiceAdd = () => {
 		if (pollList.length < 5) {
 			setPollList([...pollList, { choice: "", count: 0 }]);
+		} else {
+			toast.error("You can't add more than 5 choices.",{autoClose:1500});
 		}
 	};
 
@@ -49,6 +51,9 @@ export default function Home() {
 			}
 		});
 		if (count >= 2) {
+			//remove empty choices
+			setPollList(pollList.filter((poll) => poll));
+
 			//filter unique choices
 			let uniqueObjArray = [
 				...new Map(pollList.map((item) => [item["choice"], item])).values(),
@@ -82,7 +87,7 @@ export default function Home() {
 					setLoading(true);
 
 					setTimeout(() => {
-						router.push(`/vote/${hash}`);
+						router.push(`/result/${hash}`);
 					}, 2000);
 				}
 			});

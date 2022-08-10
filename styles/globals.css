@@ -35,7 +35,9 @@ input,
 }
 
 .chartTypeButton {
-	border: 1px solid #ccc;
+	border-image-slice: 1;
+	border-width: 3px;
+	border-image-source: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
 	padding: 8px;
 	border-radius: 10px;
 	outline: none;
@@ -45,10 +47,16 @@ input,
 	margin-bottom: 50px;
 }
 
-.chartTypeButton:hover {
+.active {
+	cursor: default;
+	background: rgb(3, 148, 237);
+	background: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
+}
+
+.chartTypeButton:not(.active):hover {
 	cursor: pointer;
-	background-color: rgb(255, 255, 255);
-	color: black;
+	background: rgb(3, 148, 237);
+	background: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
 }
 
 input::placeholder {
@@ -59,6 +67,25 @@ input::placeholder {
 	background: rgb(3, 148, 237);
 	background: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
 }
+
 .gradient-text {
-	color: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
+	background: -webkit-linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.share-button {
+	color: whitesmoke;
+}
+
+.share-items {position: absolute;
+	left: 10px;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	text-align: center;
 }
