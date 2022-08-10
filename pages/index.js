@@ -4,12 +4,15 @@ import randomBytes from "randombytes";
 import { useRouter } from "next/router";
 import { supabase } from "../utils/supabaseClient";
 
+import { Player } from "@lottiefiles/react-lottie-player";
+
 //Notification
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
 	const router = useRouter();
+	const [loading, setLoading] = useState(false);
 	const [pollList, setPollList] = useState([
 		{ choice: "", count: 0 },
 		{ choice: "", count: 0 },
@@ -74,6 +77,8 @@ export default function Home() {
 					throw new error();
 				}
 				if (data) {
+					setLoading(true);
+					
 					setTimeout(() => {
 						router.push(`/vote/${hash}`);
 					}, 2000);
@@ -83,10 +88,20 @@ export default function Home() {
 			toast.error("Please add at least two choices", {autoClose: 1500});
 		}
 	};
-
+	if (loading) {
+		return (
+			<div className="h-screen flex justify-center items-center">
+				<ToastContainer />
+				<Player
+					autoplay
+					loop
+					src="https://assets9.lottiefiles.com/datafiles/QeC7XD39x4C1CIj/data.json"
+					style={{ height: "400px", width: "400px" }}></Player>
+			</div>
+		);
+	}
 	return (
 		<div className="flex justify-center flex-col">
-			<ToastContainer />
 			{/* title */}
 			<div className="text-center mt-[100px]">
 				<h1 className="text-white font-bold text-6xl">Create Poll</h1>

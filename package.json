@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.4.7",
     "@supabase/supabase-js": "^1.35.6",
     "chart.js": "^3.9.1",
     "next": "12.2.4",

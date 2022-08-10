@@ -107,16 +107,6 @@ export default function Results({ serverData, error }) {
 			}
 		);
 	};
-
-	if (!results) {
-		return <div>Loading...</div>;
-	}
-	if (error) {
-		console.log(error);
-		return <div>Error</div>;
-	}
-	console.log(results[0]);
-
 	const data = {
 		labels: results.map((count) => count.choices[0].choice),
 		datasets: [
@@ -156,6 +146,18 @@ export default function Results({ serverData, error }) {
 			},
 		],
 	};
+
+	if (!results) {
+		return <div>Loading...</div>;
+	}
+	if (error) {
+		console.log(error);
+		return <div>Error</div>;
+	}
+	if (results.length === 0) {
+		return <div>No results</div>;
+	}
+		
 	return (
 		<div className="h-screen flex flex-col justify-center items-center">
 			<ToastContainer/>
