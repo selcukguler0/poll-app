@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import randomBytes from "randombytes";
 import { useRouter } from "next/router";
 import { supabase } from "../utils/supabaseClient";
 
+import LoadingLottie from "../public/loading.json";
 import { Player } from "@lottiefiles/react-lottie-player";
 
 import {BsArrowRightSquareFill} from "react-icons/bs";
@@ -103,7 +104,7 @@ export default function Home() {
 				<Player
 					autoplay
 					loop
-					src="https://assets9.lottiefiles.com/datafiles/QeC7XD39x4C1CIj/data.json"
+					src={LoadingLottie}
 					style={{ height: "400px", width: "400px" }}></Player>
 			</div>
 		);

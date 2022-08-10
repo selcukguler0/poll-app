@@ -59,6 +59,24 @@ input,
 	background: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
 }
 
+.vote-button {
+	border-image-slice: 1;
+	border-width: 3px;
+	border-image-source: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
+	padding: 8px;
+	border-radius: 10px;
+	outline: none;
+	font-size: 1.6rem;
+	background-color: transparent;
+	color: white;
+}
+
+.vote-button:hover {
+	cursor: pointer;
+	background: rgb(3, 148, 237);
+	background: linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
+}
+
 input::placeholder {
 	color: rgb(171, 171, 171);
 }
@@ -69,16 +87,13 @@ input::placeholder {
 }
 
 .gradient-text {
-	background: -webkit-linear-gradient(90deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
+	background: -webkit-linear-gradient(180deg, rgba(3, 148, 237, 1) 14%, rgba(241, 4, 243, 1) 79%);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
 
-.share-button {
-	color: whitesmoke;
-}
-
-.share-items {position: absolute;
+.share-items {
+	position: absolute;
 	left: 10px;
 }
 

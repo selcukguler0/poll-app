@@ -1,7 +1,7 @@
 import { supabase } from "../../utils/supabaseClient";
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
-
+import LoadingLottie from "../../public/loading.json";
 import { Player } from "@lottiefiles/react-lottie-player";
 
 //Notification
@@ -64,7 +64,7 @@ export default function Votes({ results, hash }) {
 				<Player
 					autoplay
 					loop
-					src="https://assets9.lottiefiles.com/datafiles/QeC7XD39x4C1CIj/data.json"
+					src={LoadingLottie}
 					style={{ height: "400px", width: "400px" }}></Player>
 			</div>
 		);
@@ -76,10 +76,10 @@ export default function Votes({ results, hash }) {
 					<input
 						key={i}
 						ref={choiceRef}
-						id={i+1}
+						id={i + 1}
 						type="button"
 						onClick={handleChoice}
-						className="choiceButton"
+						className="choiceButton vote-button"
 						value={choice.choices[0].choice}
 					/>
 				);

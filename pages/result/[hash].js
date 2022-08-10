@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { supabase } from "../../utils/supabaseClient";
-import { FaShareSquare } from "react-icons/fa";
+import ShareLottie from "../../public/share.json"
+import LoadingLottie from "../../public/loading.json"
+
+import Link from "next/link";
 
 //Notification
 import { ToastContainer, toast } from "react-toastify";
@@ -143,25 +146,46 @@ export default function Results({ serverData, error }) {
 	};
 
 	if (!results) {
-		return <div>Loading...</div>;
+		return (
+			<div className="h-screen flex justify-center items-center">
+				<Player
+					autoplay
+					loop
+					src={LoadingLottie}
+					style={{ height: "400px", width: "400px" }}></Player>
+			</div>
+		);
 	}
 	if (error) {
-		console.log(error);
-		return <div>Error</div>;
+		router.push("/");
 	}
 	if (results.length === 0) {
-		return <div>No results</div>;
+		return (
+			<div className="h-screen flex flex-col justify-center items-center">
+				<span className="text-white text-3xl">
+					Vote not available or you missed.
+				</span>
+				<Link href="/">
+					<a className="gradient-text text-xl">Let&apos;s create new one.</a>
+				</Link>
+				<Player
+					autoplay
+					loop
+					src={LoadingLottie}
+					style={{ height: "400px", width: "400px" }}></Player>
+			</div>
+		);
 	}
 		
 	return (
 		<div className="h-screen flex flex-col justify-center items-center">
 			<ToastContainer />
-			<div className="flex flex-col gap-y-5 share-items">
+			<div className="flex flex-col gap-y-5 share-items text-white">
 				<button className="share-button" onClick={shareHandler}>
 					<Player
 						autoplay
 						loop
-						src="https://assets1.lottiefiles.com/packages/lf20_OBNxe4.json"
+						src={ShareLottie}
 						style={{ height: "50px", width: "50px" }}></Player>
 					Share Results
 				</button>
@@ -169,7 +193,7 @@ export default function Results({ serverData, error }) {
 					<Player
 						autoplay
 						loop
-						src="https://assets1.lottiefiles.com/packages/lf20_OBNxe4.json"
+						src={ShareLottie}
 						style={{ height: "50px", width: "50px", color: "#fff" }}></Player>
 					Vote
 				</button>
